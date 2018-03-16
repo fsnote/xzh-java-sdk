@@ -23,7 +23,7 @@ hs_err_pid*
 
 # idea 
 *.iml
-*/META-INF/
-*/target/
-out/
 .idea/
+src/main/resources/
+src/test/
+target/

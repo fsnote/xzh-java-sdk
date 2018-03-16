@@ -18,18 +18,18 @@ import java.util.Random;
  * @date 2018/2/25 下午4:13
  */
 public class AesEncryptUtil {
-    static Charset CHARSET = Charset.forName("utf-8");
-    Base64 base64 = new Base64();
-    byte[] aesKey;
-    String token;
-    String appId;
+    private static Charset CHARSET = Charset.forName("utf-8");
+    private Base64 base64 = new Base64();
+    private byte[] aesKey;
+    private String token;
+    private String appId;
 
     /**
      * 构造函数
      *
-     * @param token          公众平台上，开发者设置的token
-     * @param encodingAesKey 公众平台上，开发者设置的EncodingAESKey
-     * @param appId          公众平台appid
+     * @param token          开发者设置的token
+     * @param encodingAesKey 开发者设置的EncodingAESKey
+     * @param appId          appid
      * @throws XzhException 执行失败，请查看该异常的错误码和具体的错误信息
      */
     public AesEncryptUtil(String token, String encodingAesKey, String appId) throws XzhException {
@@ -42,7 +42,11 @@ public class AesEncryptUtil {
         aesKey = Base64.decodeBase64(encodingAesKey + "=");
     }
 
-    // 生成4个字节的网络字节序
+    /**
+     * 生成4个字节的网络字节序
+     * @param sourceNumber 文本长度
+     * @return
+     */
     byte[] getNetworkBytesOrder(int sourceNumber) {
         byte[] orderBytes = new byte[4];
         orderBytes[3] = (byte) (sourceNumber & 0xFF);
@@ -52,7 +56,11 @@ public class AesEncryptUtil {
         return orderBytes;
     }
 
-    // 还原4个字节的网络字节序
+    /**
+     * 还原4个字节的网络字节序
+     * @param orderBytes 字节码
+     * @return
+     */
     int recoverNetworkBytesOrder(byte[] orderBytes) {
         int sourceNumber = 0;
         for (int i = 0; i < 4; i++) {
@@ -62,7 +70,10 @@ public class AesEncryptUtil {
         return sourceNumber;
     }
 
-    // 随机生成16位字符串
+    /**
+     * 随机生成16位字符串
+     * @return 随机串
+     */
     public String getRandomStr() {
         String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
@@ -176,14 +187,14 @@ public class AesEncryptUtil {
     }
 
     /**
-     * 将公众平台回复用户的消息加密打包.
+     * 消息加密打包.
      * <ol>
      * <li>对要发送的消息进行AES-CBC加密</li>
      * <li>生成安全签名</li>
      * <li>将消息密文和安全签名打包成xml格式</li>
      * </ol>
      *
-     * @param replyMsg  公众平台待回复用户的消息，xml格式的字符串
+     * @param replyMsg  平台待回复用户的消息，xml格式的字符串
      * @param timeStamp 时间戳，可以自己生成，也可以用URL参数的timestamp
      * @param nonce     随机串，可以自己生成，也可以用URL参数的nonce
      * @return 加密后的可以直接回复用户的密文，包括msg_signature, timestamp, nonce, encrypt的xml格式的字符串
@@ -197,10 +208,8 @@ public class AesEncryptUtil {
         if (timeStamp == "") {
             timeStamp = Long.toString(System.currentTimeMillis());
         }
-
         String signature = SHA1.getSHA1(token, timeStamp, nonce, encrypt);
 
-        // System.out.println("发送给平台的签名是: " + signature[1].toString());
         // 生成发送的xml
         String result = XMLParse.generate(encrypt, signature, timeStamp, nonce);
         return result;
@@ -224,7 +233,6 @@ public class AesEncryptUtil {
     public String decryptMsg(String msgSignature, String timeStamp, String nonce, String postData)
         throws XzhException {
 
-        // 密钥，公众账号的app secret
         // 提取密文
         Object[] encrypt = XMLParse.extract(postData);
 
@@ -237,17 +245,15 @@ public class AesEncryptUtil {
         }
 
         // 解密
-        String result = decrypt(encrypt[1].toString());
-        return result;
+        return decrypt(encrypt[1].toString());
     }
 
     /**
      * 验证URL
-     *
      * @param msgSignature 签名串，对应URL参数的msg_signature
-     * @param timeStamp    时间戳，对应URL参数的timestamp
-     * @param nonce        随机串，对应URL参数的nonce
-     * @param echoStr      随机串，对应URL参数的echostr
+     * @param timeStamp 时间戳，对应URL参数的timestamp
+     * @param nonce 随机串，对应URL参数的nonce
+     * @param echoStr 随机串，对应URL参数的echostr
      * @return 解密之后的echostr
      * @throws XzhException 执行失败，请查看该异常的错误码和具体的错误信息
      */
@@ -259,8 +265,6 @@ public class AesEncryptUtil {
             throw new XzhException(XzhErrorEnum.VALIDATE_SIGNATURE_ERROR);
         }
 
-        String result = decrypt(echoStr);
-        return result;
+        return decrypt(echoStr);
     }
-
 }
