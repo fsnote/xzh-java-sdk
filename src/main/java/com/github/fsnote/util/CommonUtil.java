@@ -10,8 +10,6 @@ import java.util.Iterator;
 import java.util.TimeZone;
 
 /**
- * A simple class desc
- *
  * @author fsnail.wang@gmail.com
  * @date 2018/3/16 下午6:55
  */
@@ -53,7 +51,7 @@ public class CommonUtil {
             builder.append(seprator);
         }
 
-        builder.deleteCharAt(builder.length() - 1);     // remove last sep
+        builder.deleteCharAt(builder.length() - 1);
         return builder.toString();
     }
 
