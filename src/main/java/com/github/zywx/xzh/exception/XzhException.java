@@ -1,10 +1,9 @@
-package com.github.fsnote.exception;
+package com.github.zywx.xzh.exception;
 
 /**
- * A simple class desc
- *
+ * 异常处理类
  * @author fsnail.wang@gmail.com
- * @date 2018/3/15 下午7:23
+ * @date 2018/3/14 上午16:15
  */
 public class XzhException extends Exception {
 

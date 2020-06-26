@@ -24,6 +24,4 @@ hs_err_pid*
 # idea 
 *.iml
 .idea/
-src/main/resources/
-src/test/
 target/

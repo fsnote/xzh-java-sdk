@@ -1,32 +1,24 @@
-package com.github.fsnote.http;
-
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.SocketAddress;
+package com.github.zywx.xzh.http;
 
 /**
- * A simple class desc
+ * 连接配置
  *
  * @author fsnail.wang@gmail.com
- * @date 2018/3/16 下午6:55
+ * @date 2018/3/14 上午10:15
  */
-public class ClientConnectConfig {
+public class ConnectConfig {
 
-    // 连接超时设置
     private int connectionTimeoutMillis;
     private int socketTimeoutMillis;
-    private Proxy proxy;
 
-    public ClientConnectConfig() {
+    public ConnectConfig() {
         this.connectionTimeoutMillis = 0;
         this.socketTimeoutMillis = 0;
-        this.proxy = Proxy.NO_PROXY;
     }
 
-    public ClientConnectConfig(int connectionTimeoutMillis, int socketTimeoutMillis, Proxy proxy) {
+    public ConnectConfig(int connectionTimeoutMillis, int socketTimeoutMillis) {
         this.connectionTimeoutMillis = connectionTimeoutMillis;
         this.socketTimeoutMillis = socketTimeoutMillis;
-        this.proxy = proxy;
     }
 
     public int getConnectionTimeoutMillis() {
@@ -45,16 +37,4 @@ public class ClientConnectConfig {
         this.socketTimeoutMillis = socketTimeoutMillis;
     }
 
-    public Proxy getProxy() {
-        return proxy;
-    }
-
-    public void setProxy(Proxy proxy) {
-        this.proxy = proxy;
-    }
-
-    public void setProxy(String host, int port, Proxy.Type type) {
-        SocketAddress addr = new InetSocketAddress(host, port);
-        this.proxy = new Proxy(type, addr);
-    }
 }

@@ -1,10 +1,9 @@
-package com.github.fsnote.exception;
+package com.github.zywx.xzh.exception;
 
 /**
- * A simple class desc
- *
+ * SDK错误码
  * @author fsnail.wang@gmail.com
- * @date 2018/3/15 下午7:23
+ * @date 2018/3/14 上午16:15
  */
 public enum XzhErrorEnum {
     SUCCESS("0", "Success"),
@@ -14,7 +13,7 @@ public enum XzhErrorEnum {
     ENCRYPT_AES_ERROR("JSDK103", "aes encrypt error"),
     DECRYPT_AES_ERROR("JSDK104", "aes decrypt error"),
     ILLEGAL_BUFFER_ERROR("JSDK105", "aes illegal buffer error"),
-    VALIDATE_APPID_ERROR("JSDK106", "validate appid error"),
+    VALIDATE_CLIENT_ID_ERROR("JSDK106", "validate clientid error"),
     VALIDATE_SIGNATURE_ERROR("JSDK107", "validate signature error");
 
     private final String errorCode;

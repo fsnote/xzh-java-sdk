@@ -1,10 +1,10 @@
-package com.github.fsnote.http;
+package com.github.zywx.xzh.http;
 
 /**
- * A simple class desc
+ * Body类型
  *
  * @author fsnail.wang@gmail.com
- * @date 2018/3/16 下午6:55
+ * @date 2018/3/14 上午10:15
  */
 public enum BodyFormatEnum {
     FORM_KV, RAW_JSON

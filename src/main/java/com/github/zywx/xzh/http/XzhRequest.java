@@ -1,28 +1,27 @@
-package com.github.fsnote.http;
-
-import com.github.fsnote.util.CommonUtil;
-import org.json.JSONObject;
+package com.github.zywx.xzh.http;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 /**
- * A simple class desc
+ * http 请求类
  *
  * @author fsnail.wang@gmail.com
- * @date 2018/3/16 下午6:55
+ * @date 2018/3/14 上午10:15
  */
 public class XzhRequest {
     private HashMap<String, String> headers;
     private HashMap<String, String> params;
-    private HashMap<String, Object> body;
+    private HashMap<String, Object> formParams;
+    private JSONObject body;
     private URI uri;
     private HttpMethodEnum httpMethod;
     private BodyFormatEnum bodyFormat;
     private String contentEncoding;
-    private ClientConnectConfig config;
+    private ConnectConfig config;
 
     public void setHeaders(HashMap<String, String> headers) {
         this.headers = headers;
@@ -32,7 +31,11 @@ public class XzhRequest {
         this.params = params;
     }
 
-    public void setBody(HashMap<String, Object> body) {
+    public void setFormParams(HashMap<String, Object> formParams) {
+        this.formParams = formParams;
+    }
+
+    public void setBody(JSONObject body) {
         this.body = body;
     }
 
@@ -52,7 +55,7 @@ public class XzhRequest {
         this.bodyFormat = bodyFormat;
     }
 
-    public void setConfig(ClientConnectConfig config) {
+    public void setConfig(ConnectConfig config) {
         this.config = config;
     }
 
@@ -64,7 +67,11 @@ public class XzhRequest {
         return params;
     }
 
-    public HashMap<String, Object> getBody() {
+    public HashMap<String, Object> getFormParams() {
+        return formParams;
+    }
+
+    public JSONObject getBody() {
         return body;
     }
 
@@ -84,31 +91,15 @@ public class XzhRequest {
         return bodyFormat;
     }
 
-    public ClientConnectConfig getConfig() {
+    public ConnectConfig getConfig() {
         return config;
     }
 
     public String getBodyStr() {
-        ArrayList<String> arr = new ArrayList<String>();
-        if (bodyFormat.equals(BodyFormatEnum.FORM_KV)) {
-            for (Map.Entry<String, Object> entry : body.entrySet()) {
-                if (entry.getValue() == null || entry.getValue().equals("")) {
-                    arr.add(CommonUtil.uriEncode(entry.getKey(), true));
-                } else {
-                    arr.add(String.format("%s=%s", CommonUtil.uriEncode(entry.getKey(), true),
-                        CommonUtil.uriEncode(entry.getValue().toString(), true)));
-                }
-            }
-            return CommonUtil.mkString(arr.iterator(), '&');
+        if (body == null) {
+            return "";
         }
-        else if (bodyFormat.equals(BodyFormatEnum.RAW_JSON)) {
-            JSONObject json = new JSONObject();
-            for (Map.Entry<String, Object> entry : body.entrySet()) {
-                json.put(entry.getKey(), entry.getValue());
-            }
-            return json.toString();
-        }
-        return "";
+        return body.toString();
     }
 
     public String getParamStr() {
